@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Stalker</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body> 
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Stalker</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+<form class="navbar-form navbar-left" role="search" action="/check" method="post">
+<div class="form-group">
+				<label for="judge">judge:</label>
+				<input id="judgeselector" list="judges" name="judge">
+				  <datalist id="judges">
+					<option value="codeforces">
+					<option value="uva">
+					<option value="spoj">
+					<option value="timus">
+					<option value="livearchive">
+				  </datalist>
+				</input>				 
+ 				<label for="problem">problem_id:</label>
+				<input id="problem" name="problem">
+</div>
+            	<button type="submit" id="btnSearch" class="btn btn-primary">Check</button>
+			</form>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container col-md-2">
+    <div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">Upload users list</h3>
+		</div>		
+		<div class="panel-body">
+			<form action="/upload" method="POST" enctype="multipart/form-data">
+				<label for="file">File:</label>				
+				<input id="file" type="file" class="file" name="file">
+				<input type="submit" value="Upload" name="submit"/>
+			</form>
+		</div>
+    </div>
+</div>
+
+<% unless users.nil? %> 
+<div class="container col-md-2">
+<div class="panel panel-primary">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Users</div>
+
+  <!-- Table -->
+  <table class="table" data-row-style="rowStyle">
+        <tbody>
+		<% users.each do |u| %>
+			<tr>
+			<% if u.page.nil? %>
+            	<td class="active"><%=u.id%></td>
+			<% else %>
+				<td><%=u.id%></td>
+			<% end %>
+            </tr>
+		<% end %>
+        </tbody>
+      
+  </table>
+</div>
+</div>
+<% end %>
+
+<% unless users.nil? %> 
+<div class="container col-md-2">
+<div class="panel panel-danger">
+  <!-- Default panel contents -->
+  <div class="panel-heading">no AC</div>
+
+  <!-- Table -->
+  <table class="table">
+        <tbody>
+		<% users.each do |u| %>
+			<% unless u.ac %>
+			<tr>
+            <td><%=u.id%></td>
+            </tr>
+			<% end %>
+		<% end %>
+        </tbody>
+      
+  </table>
+</div>
+</div>
+<% end %>
+
+<% unless users.nil? %> 
+<div class="container col-md-2">
+<div class="panel panel-success">
+  <!-- Default panel contents -->
+  <div class="panel-heading">AC</div>
+
+  <!-- Table -->
+  <table class="table">
+        <tbody>
+		<% users.each do |u| %>
+			<% unless !u.ac %>
+			<tr>
+            <td><%=u.id%></td>
+            </tr>
+			<% end %>
+		<% end %>
+        </tbody>
+      
+  </table>
+</div>
+</div>
+<% end %>
+</body>
+</html>
+
+

@@ -12,12 +12,15 @@ class User
 	attr_accessor :id
 	attr_accessor :page
 	attr_accessor :ac
+	attr_accessor :acs
 end
 
 users = []
 
+judgeNames = ["A2", "TopCoder", "UVA", "SPOJ", "Live", "Codeforces", "TJU", "PKU", "Timus", "All"]
+
 get '/' do
-	erb :index, :locals => {:users => users}
+	erb :index, :locals => {:users => users, :judgeNames => judgeNames}
 end
 
 post '/upload' do
@@ -34,11 +37,23 @@ post '/upload' do
 			u.ac = false
 			u.id = id
 			u.page = nil
-			u.page = Nokogiri::HTML(open(URL + id))
+			#u.page = Nokogiri::HTML(open(URL + id))
+			u.page = Nokogiri::HTML(File.open("bimaoe.html", "r").read);
+
+			#get acs	
+			u.acs = {};
+			table = u.page.css("table")[3].css("td")
+			for i in 0..table.length-2
+				if i % 2 == 0
+					judgeName = table[i].text.split(' ')[0]
+					u.acs[judgeName] = table[i+1].text
+				end 
+			end
 
 			users.push(u)
 		end
-		erb :index, :locals => {:users => users}
+		
+		erb :index, :locals => {:users => users, :judgeNames => judgeNames}
 	end
 end
 
@@ -63,7 +78,7 @@ post '/check' do
 			end
 		end
 	end
-	erb :index, :locals => {:users => users}
+	erb :index, :locals => {:users => users, :jnames => judgeNames}
 end
 
 

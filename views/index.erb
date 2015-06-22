@@ -66,20 +66,31 @@
 </div>
 
 <% unless users.nil? %> 
-<div class="container col-md-2">
+<div class="container col-md-5">
 <div class="panel panel-primary">
   <!-- Default panel contents -->
-  <div class="panel-heading">Users</div>
+  <div class="panel-heading" style="text-align: center">Users</div>
 
   <!-- Table -->
-  <table class="table" data-row-style="rowStyle">
-        <tbody>
+  <table class="table table-bordered" data-row-style="rowStyle">
+		<thead>
+        	<tr>
+				<th data-field="name" style="text-align: center">ID</th>
+				<% judgeNames.each do |jn| %>
+					<th data-field="id" style="text-align: center"><%=jn%></th>				
+				<% end %>
+        	</tr>
+    	</thead>        
+		<tbody>
 		<% users.each do |u| %>
 			<tr>
 			<% if u.page.nil? %>
-            	<td class="active"><%=u.id%></td>
+            	<td class="active" style="text-align: center"><%=u.id%></td>
 			<% else %>
-				<td><%=u.id%></td>
+				<td style="text-align: center"><%=u.id%></td>
+				<% judgeNames.each do |jn| %>
+					<td style="text-align: center"><%= u.acs[jn] %></td>
+				<% end %>	
 			<% end %>
             </tr>
 		<% end %>
@@ -94,7 +105,7 @@
 <div class="container col-md-2">
 <div class="panel panel-danger">
   <!-- Default panel contents -->
-  <div class="panel-heading">no AC</div>
+  <div class="panel-heading" style="text-align: center">no AC</div>
 
   <!-- Table -->
   <table class="table">
@@ -117,7 +128,7 @@
 <div class="container col-md-2">
 <div class="panel panel-success">
   <!-- Default panel contents -->
-  <div class="panel-heading">AC</div>
+  <div class="panel-heading" style="text-align: center">AC</div>
 
   <!-- Table -->
   <table class="table">

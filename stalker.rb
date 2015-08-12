@@ -2,13 +2,88 @@ require 'sinatra'
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
+require 'data_mapper'
+
+#DataMapper::Logger.new($stdout, :debug)
+#DataMapper.setup(:default, 'sqlite::memory:')
+#DataMapper.setup(:default, 'postgres://user:password@hostname/database')
+
+
+class User
+	include DataMapper::Resource
+
+	property :id,         Serial
+	property :username,   String, 	:required => true
+	property :name,       String
+	property :email,      String
+	property :year,       DateTime
+	
+	has n, 	 :submissions
+end
+
+class Judge
+	include DataMapper::Resource
+
+	property :id,         Serial
+	property :name,       String, 	:required => true
+	property :link,       String, 	:required => true
+
+	has n, 	 :problems
+end
+
+class Problem
+	include DataMapper::Resource
+
+	property :id,         Serial
+	property :name,       String
+	property :link,       String
+	property :body,       Text
+
+	belongs_to :judge
+	has n, 	 :submissions
+	has n, :problemTags, 'ProblemTag'
+end
+
+class Submission
+	include DataMapper::Resource
+
+	property :id,         Serial
+	property :date,       DateTime, :required => true 	
+	property :result,     String
+	
+	belongs_to :user
+	belongs_to :problem
+end
+
+class Tag
+	include DataMapper::Resource
+
+	property :id, 	      Serial
+	property :name,       String
+	
+	has n, :problemTags, 'ProblemTag'
+end
+
+class ProblemTag
+	include DataMapper::Resource
+
+	property :id,         Serial
+
+	belongs_to :problem
+	belongs_to :tag
+end
+
+DataMapper.finalize
+
+@post = Tag.new(:name => "PD")
+@post.save   
 
 URL = 'http://a2oj.com/Profile.jsp?Username='
 
 JUDGE = 'codeforces'
 ID = '245H'
 
-class User 
+class LocalUser 
 	attr_accessor :id
 	attr_accessor :page
 	attr_accessor :ac
@@ -33,7 +108,7 @@ post '/upload' do
 			id = user.delete("\n")
 			puts "loading " + id + " data"
 
-			u = User.new
+			u = LocalUser.new
 			u.ac = false
 			u.id = id
 			u.page = nil

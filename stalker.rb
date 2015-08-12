@@ -75,8 +75,8 @@ end
 
 DataMapper.finalize
 
-@post = Tag.new(:name => "PD")
-@post.save   
+#@post = Tag.new(:name => "PD")
+#@post.save   
 
 URL = 'http://a2oj.com/Profile.jsp?Username='
 
@@ -112,8 +112,8 @@ post '/upload' do
 			u.ac = false
 			u.id = id
 			u.page = nil
-			#u.page = Nokogiri::HTML(open(URL + id))
-			u.page = Nokogiri::HTML(File.open("bimaoe.html", "r").read);
+			u.page = Nokogiri::HTML(open(URL + id))
+			#u.page = Nokogiri::HTML(File.open("bimaoe.html", "r").read);
 
 			#get acs	
 			u.acs = {};

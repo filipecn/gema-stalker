@@ -5,7 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+<!--<link rel="stylesheet" href="/vendor/css/jquery.dataTables.css">-->
 <script src="/vendor/jquery.min.js"></script>
+<script src="/vendor/jquery.dataTables.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body> 
@@ -72,7 +74,7 @@
   <div class="panel-heading" style="text-align: center">Users</div>
 
   <!-- Table -->
-  <table class="table table-bordered" data-row-style="rowStyle">
+  <table id="example" class="table table-bordered " data-row-style="rowStyle" data-sort-name="name">
 		<thead>
         	<tr>
 				<th data-field="name" style="text-align: center">ID</th>
@@ -147,6 +149,22 @@
 </div>
 <% end %>
 </body>
+<script>
+$(document).ready(function() {
+		$('#example').dataTable( {
+columnDefs: [ {
+targets: [ 0 ],
+orderData: [ 0, 1 ]
+}, {
+targets: [ 1 ],
+orderData: [ 1, 0 ]
+}, {
+targets: [ 4 ],
+orderData: [ 4, 0 ]
+} ]
+} );
+		} );
+</script>
 </html>
 
 
